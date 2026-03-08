@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | sol2com</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #240046, #3c096c, #5a189a);
+            color: white;
+            padding: 30px;
+        }
+
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+        }
+
+        .logo {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .slogan {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .logout {
+            background: linear-gradient(135deg, #9d4edd, #c77dff);
+            padding: 10px 22px;
+            border-radius: 25px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        /* CARD */
+        .card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+            animation: fadeUp 0.8s ease;
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255,255,255,0.18);
+        }
+
+        tr {
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        select {
+            padding: 6px 10px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .pending { background: #ffb703; }
+        .progress { background: #00bbf9; }
+        .solved { background: #06d6a0; }
+
+        button {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: none;
+            background: #9d4edd;
+            color: white;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        button:hover {
+            background: #c77dff;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 900px) {
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="top-nav">
+    <a href="/about">About</a>
+    <a href="/admin/analytics">📊 View Analytics</a>
+    <a href="/profile">Profile</a>
+    <a href="/logout" class="logout-btn">Logout</a>
+</div>
+
+    
+
+
+<!-- HEADER -->
+<div class="header">
+    <div>
+        <div class="logo">sol2com</div>
+        <div class="slogan">From complaints to clarity</div>
+    </div>
+    <a href="/logout" class="logout">Logout</a>
+</div>
+
+<!-- DASHBOARD -->
+<div class="card">
+    <h2>📋 Admin Complaint Panel</h2>
+
+    <table>
+        <tr>
+            <th>Student</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Update</th>
+        </tr>
+
+        {% for c in complaints %}
+        <tr>
+            <td>{{ c[6] }}</td>
+            <td>{{ c[2] }}</td>
+            <td>{{ c[3] }}</td>
+            <td>
+                <form method="POST">
+                    <input type="hidden" name="cid" value="{{ c[0] }}">
+                    <select name="status"
+                        class="{% if c[4]=='Pending' %}pending{% elif c[4]=='In Progress' %}progress{% else %}solved{% endif %}">
+                        <option {% if c[4]=='Pending' %}selected{% endif %}>Pending</option>
+                        <option {% if c[4]=='In Progress' %}selected{% endif %}>In Progress</option>
+                        <option {% if c[4]=='Solved' %}selected{% endif %}>Solved</option>
+                    </select>
+            </td>
+            <td>
+                    <button type="submit">Save</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</body>
+</html>
